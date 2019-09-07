@@ -8,7 +8,7 @@
 android {
   defaultConfig {
     generatedDensities = []
-    applicationId = "org.icewave.burstcoinwallet"
+    applicationId = "org.burstappsteam.mobile"
   }
   aaptOptions {
     additionalParameters "--no-version-vectors"
