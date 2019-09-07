@@ -2,7 +2,7 @@
 * Copyright 2018 PoC-Consortium
 */
 
-import { device } from "platform";
+import { device } from "tns-core-modules/platform";
 import { constants } from "./constants";
 
 /*

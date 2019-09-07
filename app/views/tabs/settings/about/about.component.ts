@@ -4,10 +4,10 @@
 
 import { Component, OnInit } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-import { Page } from "ui/page";
+import { Page } from "tns-core-modules/ui/page";
 import { constants } from "../../../../lib/model";
 
-import * as utils from "utils/utils";
+import * as utils from "tns-core-modules/utils/utils";
 
 @Component({
     moduleId: module.id,

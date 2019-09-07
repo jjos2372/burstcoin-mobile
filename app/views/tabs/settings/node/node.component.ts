@@ -4,7 +4,7 @@
 
 import { Component, OnInit, NgModule } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-import { Page } from "ui/page";
+import { Page } from "tns-core-modules/ui/page";
 import { Settings } from "../../../../lib/model";
 import { DatabaseService } from "../../../../lib/services";
 

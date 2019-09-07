@@ -17,7 +17,7 @@ require("nativescript-angular/forms");
 require("nativescript-angular/router");
 
 // loki
-require("file-system");
+require("tns-core-modules/file-system");
 require("lokijs");
 require("loki-nativescript-adapter");
 

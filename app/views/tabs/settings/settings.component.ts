@@ -6,7 +6,7 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { TranslateService } from 'ng2-translate';
-import { SwipeGestureEventData } from "ui/gestures";
+import { SwipeGestureEventData } from "tns-core-modules/ui/gestures";
 
 import { Account, Transaction, Settings, constants } from "../../../lib/model";
 
@@ -17,7 +17,7 @@ import { LanguageComponent } from "./language/language.component";
 import { NodeComponent } from "./node/node.component";
 import { SupportComponent } from "./support/support.component";
 
-import * as utils from "utils/utils";
+import * as utils from "tns-core-modules/utils/utils";
 
 @Component({
     selector: "settings",
@@ -47,7 +47,10 @@ export class SettingsComponent implements OnInit {
         this.databaseService.getSettings()
             .then(settings => {
                 this.settings = settings;
-                this.currentLanguageName = constants.languages.find(i => i.code == settings.language).name;
+                var lang = constants.languages.find(i => i.code == settings.language);
+                if(lang==null)
+                    lang = constants.languages.find(i => i.code == constants.defaultLanguage);
+                this.currentLanguageName = lang.name;
             })
     }
 

@@ -4,9 +4,9 @@
 
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { Button } from "ui/button";
-import { TextField } from "ui/text-field";
-import { EventData } from "data/observable";
+import { Button } from "tns-core-modules/ui/button";
+import { TextField } from "tns-core-modules/ui/text-field";
+import { EventData } from "tns-core-modules/data/observable";
 import { PassPhraseGenerator } from "../../../lib/util/crypto";
 import { CreateService } from "../create.service"
 

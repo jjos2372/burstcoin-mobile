@@ -4,8 +4,8 @@
 
 import { Component, OnInit, NgModule } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-import { Page } from "ui/page";
-import { ListPicker } from "ui/list-picker";
+import { Page } from "tns-core-modules/ui/page";
+import { ListPicker } from "tns-core-modules/ui/list-picker";
 import { constants } from "../../../../lib/model";
 import { DatabaseService } from "../../../../lib/services";
 

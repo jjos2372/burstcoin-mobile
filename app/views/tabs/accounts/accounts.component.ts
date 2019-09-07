@@ -5,13 +5,13 @@
 import { Component, OnInit, ViewContainerRef, ViewChild } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
-import { isAndroid } from "platform";
-import { SwipeGestureEventData } from "ui/gestures";
-import { Label } from "ui/label";
-import { Image } from "ui/image";
+import { isAndroid } from "tns-core-modules/platform";
+import { SwipeGestureEventData } from "tns-core-modules/ui/gestures";
+import { Label } from "tns-core-modules/ui/label";
+import { Image } from "tns-core-modules/ui/image";
 import { TranslateService } from 'ng2-translate';
 import { RadListViewComponent } from "nativescript-pro-ui/listview/angular";
-import { isIOS } from "platform";
+import { isIOS } from "tns-core-modules/platform";
 
 import { Account, BurstAddress, Currency } from "../../../lib/model";
 import { NoConnectionError } from "../../../lib/model/error";

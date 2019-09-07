@@ -4,7 +4,7 @@
 
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { TouchGestureEventData } from "ui/gestures";
+import { TouchGestureEventData } from "tns-core-modules/ui/gestures";
 import { CryptoService } from "../../../lib/services";
 import { PassPhraseGenerator } from "../../../lib/util/crypto";
 import { CreateService } from "../create.service"

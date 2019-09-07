@@ -5,8 +5,8 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-import { Page } from "ui/page";
-import { topmost } from "ui/frame";
+import { Page } from "tns-core-modules/ui/page";
+import { topmost } from "tns-core-modules/ui/frame";
 
 @Component({
     selector: "add",

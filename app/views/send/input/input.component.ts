@@ -9,9 +9,10 @@ import { TranslateService } from "ng2-translate";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { RadSideDrawerComponent, SideDrawerType } from "nativescript-pro-ui/sidedrawer/angular";
 import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
-import { Switch } from "ui/switch";
+import { Switch } from "tns-core-modules/ui/switch";
 import { BarcodeScanner, ScanOptions } from 'nativescript-barcodescanner';
 
+import { UnknownAccountError } from "../../../lib/model/error"
 import { Account, BurstAddress, Fees, Settings, Transaction, constants } from "../../../lib/model";
 import { AccountService, DatabaseService, MarketService, NotificationService } from "../../../lib/services";
 import { SendService } from "../send.service";
@@ -35,11 +36,11 @@ export class InputComponent implements OnInit {
     private drawer: RadSideDrawer;
     private fee: number;
     private fees: Fees;
-    private messageEnabled: boolean
     private message: string
     private messageEncrypted: boolean
+    private loading: boolean;
     private pin: string;
-    private recipientParts: string[];
+    private recipient: string;
     private settings: Settings;
     private total: number;
 
@@ -67,9 +68,9 @@ export class InputComponent implements OnInit {
     ngOnInit(): void {
         // if called with address in path, insert address
         if (this.route.snapshot.params['address'] != undefined) {
-            this.recipientParts = BurstAddress.splitBurstAddress(this.route.snapshot.params['address']);
+            this.recipient = this.route.snapshot.params['address'];
         } else {
-            this.recipientParts = BurstAddress.splitBurstAddress(this.sendService.getRecipient());
+            //this.recipient = this.sendService.getRecipient();
         }
         // load current account
         if (this.accountService.currentAccount.value != undefined) {
@@ -84,7 +85,6 @@ export class InputComponent implements OnInit {
         this.fee = this.sendService.getFee();
         this.total = this.sendService.getAmount() + this.sendService.getFee();
         this.message = this.sendService.getMessage();
-        this.messageEnabled = this.sendService.getMessageEnabled();
         this.messageEncrypted = this.sendService.getMessageEncrypted();
 
         this.accountService.getSuggestedFees().then(fees => {
@@ -102,8 +102,14 @@ export class InputComponent implements OnInit {
         let encryptionSwitch = <Switch>args.object;
         if (encryptionSwitch.checked) {
             this.messageEncrypted = true
+            this.translateService.get('SEND.ENCRYPTED').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
         } else {
             this.messageEncrypted = false
+            this.translateService.get('SEND.PUBLIC').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
         }
     }
 
@@ -131,7 +137,7 @@ export class InputComponent implements OnInit {
     }
 
     public onTapContact(contact: string) {
-        this.recipientParts = BurstAddress.splitBurstAddress(contact)
+        this.recipient = contact;
         this.drawer.closeDrawer();
         this.amountField.nativeElement.focus();
     }
@@ -181,14 +187,10 @@ export class InputComponent implements OnInit {
             .catch(error => console.log(JSON.stringify(error)));
     }
 
-    public onTapMessage() {
-        this.messageEnabled = !this.messageEnabled
-    }
-
     public onDoubleTapRecipient() {
         clipboard.getText().then(text => {
             if (BurstAddress.isBurstcoinAddress(text)) {
-                this.recipientParts = BurstAddress.splitBurstAddress(text)
+                this.recipient = text
             }
         })
     }
@@ -206,7 +208,7 @@ export class InputComponent implements OnInit {
             formats: "QR_CODE"
         }
         this.barcodeScanner.scan(options).then((result) => {
-            this.recipientParts = BurstAddress.splitBurstAddress(result.text);
+            this.recipient = result.text;
             this.amountField.nativeElement.focus();
         }, (errorMessage) => {
             this.translateService.get('NOTIFICATIONS.ERRORS.QR_CODE').subscribe((res: string) => {
@@ -215,42 +217,75 @@ export class InputComponent implements OnInit {
         });
     }
 
-    public onTapVerify() {
-        if (this.verifyRecipient()) {
-            if (this.verifyAmount()) {
-                if (this.verifyFee()) {
-                    if (this.verifyTotal()) {
-                        this.sendService.setRecipient(BurstAddress.constructBurstAddress(this.recipientParts))
-                        this.sendService.setAmount(this.amount)
-                        this.sendService.setFee(this.fee)
-                        this.sendService.setMessageEnabled(this.messageEnabled)
-                        this.sendService.setMessage(this.message)
-                        this.sendService.setMessageEncrypted(this.messageEncrypted)
-                        this.router.navigate(['send', 'verify'])
-                    } else {
-                        this.translateService.get('NOTIFICATIONS.EXCEED').subscribe((res: string) => {
-                            this.notificationService.info(res);
-                        });
-                    }
-                } else {
-                    this.translateService.get('NOTIFICATIONS.DECIMAL_FEE').subscribe((res: string) => {
-                        this.notificationService.info(res);
-                    });
-                }
-            } else {
-                this.translateService.get('NOTIFICATIONS.DECIMAL_AMOUNT').subscribe((res: string) => {
-                    this.notificationService.info(res);
-                });
-            }
-        } else {
+    public onTapAccept() {
+
+        if (!this.verifyRecipient()) {
             this.translateService.get('NOTIFICATIONS.ADDRESS').subscribe((res: string) => {
                 this.notificationService.info(res);
             });
+            return;
         }
+        if (!this.verifyAmount()) {
+            this.translateService.get('NOTIFICATIONS.DECIMAL_AMOUNT').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
+            return;
+        }
+        if (!this.verifyFee()) {
+            this.translateService.get('NOTIFICATIONS.DECIMAL_FEE').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
+            return;
+        }
+        if (!this.verifyTotal()) {
+            this.translateService.get('NOTIFICATIONS.EXCEED').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
+            return;
+        }
+        if (!this.accountService.checkPin(this.pin)) {
+            this.translateService.get('NOTIFICATIONS.WRONG_PIN').subscribe((res: string) => {
+                this.notificationService.info(res);
+            });
+            return;
+        }
+
+        // No problem detected with the given information
+
+        // TODO: ask the user again if send or cancel.
+
+        this.sendService.setRecipient(this.recipient);
+        this.sendService.setAmount(this.amount);
+        this.sendService.setFee(this.fee);
+        this.sendService.setMessage(this.message);
+        this.sendService.setMessageEncrypted(this.messageEncrypted);
+
+        this.loading = true;
+        this.sendService.createTransaction(this.account.keys, this.pin).then(transaction => {
+        this.accountService.doTransaction(transaction, this.account.keys.signPrivateKey, this.pin)
+                        .then(transaction => {
+                            this.translateService.get('NOTIFICATIONS.TRANSACTION').subscribe((res: string) => {
+                                this.notificationService.info(res);
+                            });
+                            this.sendService.reset();
+                            this.router.navigate(['/tabs'], { clearHistory: true });
+                        }).catch(error => {
+                            this.loading = false;
+                            this.notificationService.info(error);
+                        })
+                }).catch(error => {
+                    this.loading = false;
+                    if (error instanceof UnknownAccountError) {
+                        this.translateService.get('NOTIFICATIONS.ERRORS.NO_PUBLIC_KEY').subscribe((res: string) => {
+                            this.notificationService.info(res);
+                        });
+                    }
+                })
     }
 
+
     public verifyRecipient(): boolean {
-        return BurstAddress.isBurstcoinAddress(BurstAddress.constructBurstAddress(this.recipientParts))
+        return BurstAddress.isBurstcoinAddress(this.recipient)
     }
 
     public verifyAmount(): boolean {
@@ -285,14 +320,6 @@ export class InputComponent implements OnInit {
             this.total = Number(this.fee);
         } else {
             this.total = Number(this.amount) + Number(this.fee);
-        }
-    }
-
-    public formatRecipient() {
-        for (let i = 0; i < this.recipientParts.length; i++) {
-            if (this.recipientParts[i] != undefined) {
-                this.recipientParts[i] = this.recipientParts[i].toUpperCase()
-            }
         }
     }
 }

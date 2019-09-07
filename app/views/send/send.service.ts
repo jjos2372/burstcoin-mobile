@@ -12,7 +12,6 @@ export class SendService {
     private fee: number;
     private recipient: string;
 
-    private messageEnabled: boolean;
     private message: string;
     private messageEncrypted: boolean;
 
@@ -29,8 +28,7 @@ export class SendService {
         this.fee = constants.defaultFee;
 
         this.message = ""
-        this.messageEnabled = false;
-        this.messageEncrypted = true;
+        this.messageEncrypted = false;
     }
 
     public setRecipient(recipient: string) {
@@ -61,16 +59,12 @@ export class SendService {
         return this.amount + this.fee;
     }
 
-    public setMessageEnabled(enabled: boolean) {
-        this.messageEnabled = enabled;
+    public setMessage(message: string) {
+        this.message = message;
     }
 
     public getMessageEnabled(): boolean {
-        return this.messageEnabled;
-    }
-
-    public setMessage(message: string) {
-        this.message = message;
+        return this.message!=null && this.message.length>0;
     }
 
     public getMessage(): string {
@@ -92,7 +86,7 @@ export class SendService {
             transaction.senderPublicKey = keys.publicKey;
             transaction.amountNQT = this.amount;
             transaction.feeNQT = this.fee;
-            if (this.messageEnabled) {
+            if (this.message!=null && this.message.length > 0) {
                 if (this.messageEncrypted) { // encrypted message
                     let em = new EncryptedMessage();
                     this.cryptoService.getAccountIdFromBurstAddress(this.recipient).then(

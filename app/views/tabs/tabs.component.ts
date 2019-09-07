@@ -6,9 +6,9 @@ import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { LangChangeEvent, TranslateService } from 'ng2-translate';
-import { isAndroid } from "platform";
+import { isAndroid } from "tns-core-modules/platform";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
-import { Page } from "ui/page";
+import { Page } from "tns-core-modules/ui/page";
 
 import { Account } from "../../lib/model";
 import { AccountService, DatabaseService, NotificationService, TabsService } from "../../lib/services";

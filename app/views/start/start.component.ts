@@ -5,8 +5,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { TranslateService } from 'ng2-translate';
-import { device } from "platform";
-import { Page } from "ui/page";
+import { device } from "tns-core-modules/platform";
+import { Page } from "tns-core-modules/ui/page";
 
 import { Account } from "../../lib/model";
 import { AccountService, DatabaseService, NotificationService } from "../../lib/services";

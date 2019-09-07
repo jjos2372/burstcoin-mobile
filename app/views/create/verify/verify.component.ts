@@ -4,7 +4,7 @@
 
 import { Component } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { EventData } from "data/observable";
+import { EventData } from "tns-core-modules/data/observable";
 import { TranslateService } from "ng2-translate";
 import { AccountService, NotificationService } from "../../../lib/services";
 import { CreateService } from "../create.service"

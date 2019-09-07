@@ -5,12 +5,12 @@
 import { Component, OnInit, NgModule } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
 import { RouterExtensions } from "nativescript-angular/router";
-import { Page } from "ui/page";
+import { Page } from "tns-core-modules/ui/page";
 import { TranslateService } from "ng2-translate";
 import { constants } from "../../../../lib/model";
 import { AccountService, NotificationService } from "../../../../lib/services";
 
-import * as utils from "utils/utils";
+import * as utils from "tns-core-modules/utils/utils";
 
 // >> passing-parameters
 @Component({

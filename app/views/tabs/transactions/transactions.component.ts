@@ -4,7 +4,7 @@
 
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
-import { SwipeGestureEventData } from "ui/gestures";
+import { SwipeGestureEventData } from "tns-core-modules/ui/gestures";
 import { TranslateService } from 'ng2-translate';
 
 import { Account, Transaction, constants } from "../../../lib/model";
@@ -14,7 +14,7 @@ import { AccountService, DatabaseService, MarketService, NotificationService, Ta
 import { DecryptComponent } from "./decrypt/decrypt.component";
 
 import * as SocialShare from "nativescript-social-share";
-import * as utils from "utils/utils";
+import * as utils from "tns-core-modules/utils/utils";
 let clipboard = require("nativescript-clipboard");
 
 @Component({

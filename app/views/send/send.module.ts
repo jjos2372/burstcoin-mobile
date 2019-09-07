@@ -6,6 +6,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptUISideDrawerModule } from "nativescript-pro-ui/sidedrawer/angular";
+import { MaskedTextFieldModule } from "nativescript-masked-text-field/angular";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { SharedModule } from "../../lib/shared.module";
 
@@ -28,6 +29,7 @@ export function createBarcodeScanner() {
         NativeScriptCommonModule,
         NativeScriptFormsModule,
         NativeScriptUISideDrawerModule,
+        MaskedTextFieldModule,
         SharedModule,
         SendRoutingModule
     ],

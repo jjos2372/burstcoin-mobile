@@ -3,9 +3,10 @@
 */
 
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
-import { Switch } from "ui/switch";
+import { Switch } from "tns-core-modules/ui/switch";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
+import { MaskedTextFieldModule } from "nativescript-masked-text-field/angular";
 import { TranslateService } from 'ng2-translate';
 import { BurstAddress } from "../../lib/model";
 import { AccountService, CryptoService, NotificationService } from "../../lib/services";
@@ -21,7 +22,6 @@ export class ImportComponent implements OnInit {
     private step: number;
     private activeInput: string;
     private offlineInput: string;
-    private offlineInputParts: string[];
     private state: string;
     private hint: string;
     private active: boolean;
@@ -42,7 +42,6 @@ export class ImportComponent implements OnInit {
         this.step = 1;
         this.activeInput = "";
         this.offlineInput = "";
-        this.offlineInputParts = [];
         this.hint = "Passphrase";
         this.active = true;
     }
@@ -57,9 +56,9 @@ export class ImportComponent implements OnInit {
     }
 
     public onTapImport(e) {
-        if (BurstAddress.isBurstcoinAddress(BurstAddress.constructBurstAddress(this.offlineInputParts))) {
-            this.step = 0;
-            this.accountService.createOfflineAccount(BurstAddress.constructBurstAddress(this.offlineInputParts))
+        if (BurstAddress.isBurstcoinAddress(this.offlineInput)) {
+                this.step = 0;
+            this.accountService.createOfflineAccount(this.offlineInput)
                 .then(account => {
                     this.accountService.selectAccount(account)
                         .then(account => {
@@ -131,14 +130,6 @@ export class ImportComponent implements OnInit {
             this.translateService.get("NOTIFICATIONS.PIN").subscribe((res: string) => {
                 this.notificationService.info(res);
             });
-        }
-    }
-
-    public formatAddress() {
-        for (let i = 0; i < this.offlineInputParts.length; i++) {
-            if (this.offlineInputParts[i] != undefined) {
-                this.offlineInputParts[i] = this.offlineInputParts[i].toUpperCase()
-            }
         }
     }
 }

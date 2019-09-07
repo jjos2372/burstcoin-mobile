@@ -5,7 +5,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-import { Page } from "ui/page";
+import { Page } from "tns-core-modules/ui/page";
 import { TranslateService } from 'ng2-translate';
 
 import { Account } from "../../../../lib/model";

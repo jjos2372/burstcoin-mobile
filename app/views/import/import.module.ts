@@ -5,6 +5,7 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { MaskedTextFieldModule } from "nativescript-masked-text-field/angular";
 import { SharedModule } from "../../lib/shared.module";
 
 import { ImportRoutingModule } from "./import.routing";
@@ -15,6 +16,7 @@ import { ShowComponent } from "./show/show.component";
 @NgModule({
     imports: [
         NativeScriptCommonModule,
+        MaskedTextFieldModule,
         NativeScriptFormsModule,
         SharedModule,
         ImportRoutingModule

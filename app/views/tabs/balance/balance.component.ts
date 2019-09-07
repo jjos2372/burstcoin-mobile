@@ -5,13 +5,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { SelectedIndexChangedEventData, TabView, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { RouterExtensions } from "nativescript-angular/router";
-import { SwipeGestureEventData } from "ui/gestures";
-import { Image } from "ui/image"
+import { SwipeGestureEventData } from "tns-core-modules/ui/gestures";
+import { Image } from "tns-core-modules/ui/image"
 import { TranslateService } from "ng2-translate";
 import { Account, BurstAddress, Currency, constants } from "../../../lib/model";
 import { AccountService, DatabaseService, MarketService, NotificationService, TabsService } from "../../../lib/services";
 import { RadListViewComponent } from "nativescript-pro-ui/listview/angular";
-import { isIOS } from "platform";
+import { isIOS } from "tns-core-modules/platform";
 import { BarcodeScanner, ScanOptions } from 'nativescript-barcodescanner';
 
 import * as SocialShare from "nativescript-social-share";

@@ -4,7 +4,7 @@
 
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions, Response, URLSearchParams } from "@angular/http";
-import { device } from "platform";
+import { device } from "tns-core-modules/platform";
 import { BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/timeout';
